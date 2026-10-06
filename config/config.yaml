@@ -1,0 +1,21 @@
+# Runtime parameters — loaded by AgentRegistry, passed as Graph(config=...).
+# Separate from config/agent.yaml (the static manifest).
+# In the standalone deployment the same file is read by _runtime_config()
+# (src/graph/graph.py) and forwarded — validated — to the inner domain graph.
+
+# Backbone retry budget, consumed by the framework's routing.
+max_retry: 3
+
+# Wall-clock budget for one report generation, in seconds.
+timeout_s: 30
+
+# Report-synthesis settings for a live-model build. When the platform
+# provisions a model these drive the generation step; the bundled build
+# synthesises the report deterministically from the validated inspection
+# record and reads none of them at generation time. They are still validated
+# and forwarded to the inner graph so a deployment that enables a model
+# changes configuration, not code.
+llm:
+  system_prompt_template: "prompts/maintenance_report.j2"
+  temperature: 0.1
+  max_tokens: 3500
